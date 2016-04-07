@@ -20,9 +20,36 @@ Certification of Authenticity:
 */
 package obtranslateclient;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.Scanner;
+
 public class OBTranslateClient {
+
     public static void main(String[] args) {
         // Client Main Code Goes Here
+        System.out.println("Translator Client Started");
+        
+        try{
+            System.out.println("Waiting for Translator Server");
+            
+            InetAddress localAddress = InetAddress.getLocalHost();
+            
+            try{
+                Socket clientSocket = new Socket(localAddress, 6000); // change key leter
+                BufferedReader buffReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
+                System.out.println("Connected!");
+            } catch(IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        } catch (IOException ex){
+            System.out.println(ex.getMessage());
+        }
     }
     
 }
