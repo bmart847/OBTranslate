@@ -22,9 +22,27 @@ Certification of Authenticity:
 */
 package obtranslateserver;
 
+import java.net.*;
+import java.io.*;
+
 public class OBTranslateServer {
     public static void main(String[] args) {
-        //Server Main Code Goes Here
+        System.out.println("OBTranslate Server");
+        System.out.println("------------------");
+        System.out.println("starting server...");
+        
+        Socket sSocket = null;
+        ServerSocket serverSocket;
+        
+        try{
+            serverSocket = new ServerSocket(6000);
+            sSocket = serverSocket.accept();
+        }
+        catch(IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        System.out.println("connected to client...");
     }
     
 }
