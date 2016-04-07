@@ -42,10 +42,13 @@ public class OBTranslateClient {
             try{
                 Socket clientSocket = new Socket(localAddress, 6000); // change key leter
                 BufferedReader buffReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter output = new printWriter(clientSocket.getOutputStream(), true);
+                PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
                 System.out.println("Connected!");
-                Systme.out.println()
+            } catch(IOException ex) {
+                System.out.println(ex.getMessage());
             }
+        } catch (IOException ex){
+            System.out.println(ex.getMessage());
         }
     }
     
