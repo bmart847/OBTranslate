@@ -44,6 +44,21 @@ public class OBTranslateClient {
                 BufferedReader buffReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
                 System.out.println("Connected!");
+                System.out.print("Enter desired message: ");
+                Scanner userInput = new Scanner(System.in);
+                String userInputStr = userInput.nextLine();
+                System.out.println(userInputStr);
+                System.out.println("Server response: \n");
+                
+                String serverResponse = "";
+                
+                while ((serverResponse = buffReader.readLine()) != null) {
+                    if (serverResponse.equals("callback")) { // change call to the appropriate word if its not was originally FIN
+                        break;
+                    }
+                    System.out.println(serverResponse);
+                }
+                
             } catch(IOException ex) {
                 System.out.println(ex.getMessage());
             }
