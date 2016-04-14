@@ -26,9 +26,20 @@ import java.net.*;
 import java.io.*;
 
 public class OBTranslateServer {
+    public static String genURL(String lang, String text){
+        String urlFriendly = "";
+        char tmp;
+        char[] tmptext = text.toCharArray();
+        for(int i = 0; (tmp = text[i]) != NULL; i++){
+            
+        }
+        String apiKey = "trnsl.1.1.20160412T184233Z.a3cfaa8887cf6a35.292722aa316a1c74fa6466c47208ab78ff36d00a";
+        String url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + apiKey + "&lang=" + lang + "&text=" + urlFriendly;
+        return url;
+    }
     public static void main(String[] args) {
         
-        String apiKey = "trnsl.1.1.20160412T184233Z.a3cfaa8887cf6a35.292722aa316a1c74fa6466c47208ab78ff36d00a";
+       
         String translateURL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + apiKey;
         String lang = "&lang="; //Append language code (ie. ru, en)
         String text = "&text="; //Append text (replace spaces with "+" 
