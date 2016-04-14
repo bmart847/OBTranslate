@@ -45,12 +45,6 @@ public class OBTranslateServer {
     }
     public static void main(String[] args) {
         
-       
-        String translateURL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + apiKey;
-        String lang = "&lang="; //Append language code (ie. ru, en)
-        String text = "&text="; //Append text (replace spaces with "+" 
-        URL yandexTranslate = null;
-        
         System.out.println("OBTranslate Server");
         System.out.println("------------------");
         System.out.println("starting server...");
@@ -67,6 +61,30 @@ public class OBTranslateServer {
         }
         
         System.out.println("connected to client...");
+        
+        // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
+        
+        String connectionURL = genURL("en", "Hello World.");
+        URL yandexTranslate = null;
+        try{
+            yandexTranslate = new URL(connectionURL);
+        }catch(MalformedURLException err){
+            System.out.println("Error with the fetch url...");
+            System.out.println(err.getMessage());
+        }
+        
+        String apiResponse = "";
+        URLConnection apiConnection = null;
+        try{
+            apiConnection.setConnectTimeout(30);
+            apiConnection = yandexTranslate.openConnection();
+            //Implement buffered reader here to get results and then parse JSON
+            apiResponse = "TRANSLATED TEXT";
+        }catch(IOException err){
+            System.out.println("Error fetching from API...");
+            System.out.println(err.getMessage());
+        }
+        
+        System.out.println("Response: " + apiResponse);
     }
-    
 }
