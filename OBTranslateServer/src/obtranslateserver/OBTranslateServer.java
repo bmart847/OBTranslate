@@ -28,10 +28,16 @@ import java.io.*;
 public class OBTranslateServer {
     public static String genURL(String lang, String text){
         String urlFriendly = "";
+        int size = text.length();
         char tmp;
-        char[] tmptext = text.toCharArray();
-        for(int i = 0; (tmp = text[i]) != NULL; i++){
-            
+        for(int i = 0; i < size ; i++){
+            tmp = text.charAt(i);
+            if(tmp == ' '){
+                urlFriendly = urlFriendly + "+";
+            }
+            else{
+                urlFriendly = urlFriendly + tmp;
+            }
         }
         String apiKey = "trnsl.1.1.20160412T184233Z.a3cfaa8887cf6a35.292722aa316a1c74fa6466c47208ab78ff36d00a";
         String url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + apiKey + "&lang=" + lang + "&text=" + urlFriendly;
