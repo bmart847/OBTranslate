@@ -108,6 +108,14 @@ public class OBTranslateServer {
         
         String translatedText = parseTranslation(apiResponse);
         System.out.println("Translation: " + translatedText);
+        
+        try{
+            PrintWriter out = new PrintWriter(sSocket.getOutputStream());
+            out.printf(translatedText);
+        } catch (IOException ex){
+            System.out.println("Error replying to client...");
+            System.out.println(ex.getMessage());
+        }
     }
 }
 
