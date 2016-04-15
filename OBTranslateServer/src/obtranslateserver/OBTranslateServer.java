@@ -79,7 +79,7 @@ public class OBTranslateServer {
             apiConnection = yandexTranslate.openConnection();
             BufferedReader incoming = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
             apiResponse = incoming.readLine();
-            //Implement buffered reader here to get results and then parse JSON
+            //Implement Java JSON methods and objects here (CREATE A FUNCTION ABOVE)
         }catch(IOException err){
             System.out.println("Error fetching from API...");
             System.out.println(err.getMessage());
