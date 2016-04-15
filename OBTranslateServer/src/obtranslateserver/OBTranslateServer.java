@@ -24,6 +24,7 @@ package obtranslateserver;
 
 import java.net.*;
 import java.io.*;
+import org.json.*;
 
 public class OBTranslateServer {
     public static String genURL(String lang, String text){
@@ -42,6 +43,24 @@ public class OBTranslateServer {
         String apiKey = "trnsl.1.1.20160412T184233Z.a3cfaa8887cf6a35.292722aa316a1c74fa6466c47208ab78ff36d00a";
         String url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + apiKey + "&lang=" + lang + "&text=" + urlFriendly;
         return url;
+    }
+    
+    public static String parseTranslation(String jsonString){
+        
+        String translatedText = "";
+        JSONObject jsonResponse = null;
+        JSONArray translationJSON = null;
+        
+        try{
+            jsonResponse = new JSONObject(jsonString);
+            translationJSON = jsonResponse.getJSONArray("text");
+            translatedText = translationJSON.getString(0);
+        } catch (JSONException ex){
+            System.out.println("Error retrieving translation from JSON...");
+            System.out.println(ex.getMessage());
+        }
+        
+        return translatedText;
     }
     public static void main(String[] args) {
         
@@ -64,7 +83,7 @@ public class OBTranslateServer {
         
         // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
         
-        String connectionURL = genURL("en", "Hello World.");
+        String connectionURL = genURL("ru", "Hello World.");
         URL yandexTranslate = null;
         try{
             yandexTranslate = new URL(connectionURL);
@@ -75,15 +94,29 @@ public class OBTranslateServer {
         
         String apiResponse = "";
         URLConnection apiConnection = null;
+        
         try{
+            System.out.println("Requesting translation from Yandex...");
             apiConnection = yandexTranslate.openConnection();
-            //Implement buffered reader here to get results and then parse JSON
-            apiResponse = "TRANSLATED TEXT";
+            BufferedReader incoming = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
+            apiResponse = incoming.readLine();
+            System.out.println("Response Recieved!");         
         }catch(IOException err){
             System.out.println("Error fetching from API...");
             System.out.println(err.getMessage());
         }
         
-        System.out.println("Response: " + apiResponse);
+        String translatedText = parseTranslation(apiResponse);
+        System.out.println("Translation: " + translatedText);
+        
+        try{
+            PrintWriter out = new PrintWriter(sSocket.getOutputStream());
+            out.printf(translatedText);
+        } catch (IOException ex){
+            System.out.println("Error replying to client...");
+            System.out.println(ex.getMessage());
+        }
     }
 }
+
+
