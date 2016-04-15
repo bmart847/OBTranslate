@@ -26,7 +26,25 @@ import java.net.*;
 import java.io.*;
 
 public class OBTranslateServer {
+    public static String genURL(String lang, String text){
+        String urlFriendly = "";
+        int size = text.length();
+        char tmp;
+        for(int i = 0; i < size ; i++){
+            tmp = text.charAt(i);
+            if(tmp == ' '){
+                urlFriendly = urlFriendly + "+";
+            }
+            else{
+                urlFriendly = urlFriendly + tmp;
+            }
+        }
+        String apiKey = "trnsl.1.1.20160412T184233Z.a3cfaa8887cf6a35.292722aa316a1c74fa6466c47208ab78ff36d00a";
+        String url = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + apiKey + "&lang=" + lang + "&text=" + urlFriendly;
+        return url;
+    }
     public static void main(String[] args) {
+        
         System.out.println("OBTranslate Server");
         System.out.println("------------------");
         System.out.println("starting server...");
@@ -43,6 +61,29 @@ public class OBTranslateServer {
         }
         
         System.out.println("connected to client...");
+        
+        // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
+        
+        String connectionURL = genURL("en", "Hello World.");
+        URL yandexTranslate = null;
+        try{
+            yandexTranslate = new URL(connectionURL);
+        }catch(MalformedURLException err){
+            System.out.println("Error with the fetch url...");
+            System.out.println(err.getMessage());
+        }
+        
+        String apiResponse = "";
+        URLConnection apiConnection = null;
+        try{
+            apiConnection = yandexTranslate.openConnection();
+            //Implement buffered reader here to get results and then parse JSON
+            apiResponse = "TRANSLATED TEXT";
+        }catch(IOException err){
+            System.out.println("Error fetching from API...");
+            System.out.println(err.getMessage());
+        }
+        
+        System.out.println("Response: " + apiResponse);
     }
-    
 }
