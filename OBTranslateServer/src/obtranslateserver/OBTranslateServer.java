@@ -76,7 +76,6 @@ public class OBTranslateServer {
         String apiResponse = "";
         URLConnection apiConnection = null;
         try{
-            apiConnection.setConnectTimeout(30);
             apiConnection = yandexTranslate.openConnection();
             //Implement buffered reader here to get results and then parse JSON
             apiResponse = "TRANSLATED TEXT";
