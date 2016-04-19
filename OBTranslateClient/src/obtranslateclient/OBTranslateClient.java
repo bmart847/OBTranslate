@@ -24,46 +24,55 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
 import java.util.Scanner;
 
 public class OBTranslateClient {
 
     public static void main(String[] args) {
-        // Client Main Code Goes Here
         System.out.println("Translator Client Started");
+
+        InetAddress localAddress = null;
+        Socket clientSocket;
+        BufferedReader buffReader = null;
+        PrintWriter output = null;
+        Scanner uInputStream = new Scanner(System.in);
+        String userInput = "";
+
+        try{
+            localAddress = InetAddress.getLocalHost(); 
+        }catch(UnknownHostException ex){
+            System.out.println(ex.getMessage());
+            System.exit(1);
+        }
         
         try{
-            System.out.println("Waiting for Translator Server");
-            
-            InetAddress localAddress = InetAddress.getLocalHost();
-            
-            try{
-                Socket clientSocket = new Socket(localAddress, 6000); // change key leter
-                BufferedReader buffReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter output = new PrintWriter(clientSocket.getOutputStream(), true);
-                System.out.println("Connected!");
-                System.out.print("Enter desired message: ");
-                Scanner userInput = new Scanner(System.in);
-                String userInputStr = userInput.nextLine();
-                System.out.println(userInputStr);
-                System.out.println("Server response: \n");
-                
-                String serverResponse = "";
-                
-                while ((serverResponse = buffReader.readLine()) != null) {
-                    if (serverResponse.equals("callback")) { // change call to the appropriate word if its not was originally FIN
-                        break;
-                    }
-                    System.out.println(serverResponse);
-                }
-                
-            } catch(IOException ex) {
-                System.out.println(ex.getMessage());
-            }
-        } catch (IOException ex){
+            clientSocket= new Socket(localAddress, 6000);
+            buffReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            output = new PrintWriter(clientSocket.getOutputStream(), true);
+            System.out.println("Connected!");               
+        } catch(IOException ex){
             System.out.println(ex.getMessage());
+            System.exit(1);
+        }
+        
+        System.out.println("Enter language code:");
+        userInput = uInputStream.nextLine();
+        output.println(userInput);
+        System.out.println("Enter text to translate:");
+        userInput = uInputStream.nextLine();
+        output.println(userInput);
+        
+        String serverResponse = "";
+        try{
+            while ((serverResponse = buffReader.readLine()) != null) {
+                if (serverResponse.equals("callback")) { // change call to the appropriate word if its not was originally FIN
+                    break;
+                }
+                System.out.println("Translation: " + serverResponse);
+            }            
+        }   catch(IOException ex){
+            ex.getMessage();
         }
     }
     

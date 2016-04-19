@@ -70,6 +70,7 @@ public class OBTranslateServer {
         
         Socket sSocket = null;
         ServerSocket serverSocket;
+        String languageCode = "", userInput = "";
         
         try{
             serverSocket = new ServerSocket(6000);
@@ -82,8 +83,16 @@ public class OBTranslateServer {
         System.out.println("connected to client...");
         
         // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
+        BufferedReader input = null;
+        try{
+            input = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
+            languageCode = input.readLine();
+            userInput = input.readLine();
+        }   catch(IOException ex){
+            System.out.println(ex.getMessage());
+        }
         
-        String connectionURL = genURL("ru", "Hello World.");
+        String connectionURL = genURL(languageCode, userInput);
         URL yandexTranslate = null;
         try{
             yandexTranslate = new URL(connectionURL);
@@ -111,7 +120,8 @@ public class OBTranslateServer {
         
         try{
             PrintWriter out = new PrintWriter(sSocket.getOutputStream());
-            out.printf(translatedText);
+            out.println(translatedText);
+            out.flush();
         } catch (IOException ex){
             System.out.println("Error replying to client...");
             System.out.println(ex.getMessage());
