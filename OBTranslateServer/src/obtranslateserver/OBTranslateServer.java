@@ -81,8 +81,7 @@ public class OBTranslateServer {
         }
         
         System.out.println("connected to client...");
-        
-        // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
+
         BufferedReader input = null;
         try{
             input = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
