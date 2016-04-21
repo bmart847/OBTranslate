@@ -56,24 +56,25 @@ public class OBTranslateClient {
             System.exit(1);
         }
         
-        System.out.println("Enter language code:");
-        userInput = uInputStream.nextLine();
-        output.println(userInput);
-        System.out.println("Enter text to translate:");
-        userInput = uInputStream.nextLine();
-        output.println(userInput);
-        
-        String serverResponse = "";
-        try{
-            while ((serverResponse = buffReader.readLine()) != null) {
-                if (serverResponse.equals("callback")) { // change call to the appropriate word if its not was originally FIN
-                    break;
+        while(true){
+            System.out.println("Enter language code (type 'exit' to quit):");
+            userInput = uInputStream.nextLine();
+            output.println(userInput);
+            System.out.println("Enter text to translate:");
+            userInput = uInputStream.nextLine();
+            output.println(userInput);
+
+            String serverResponse = "";
+            try{
+                while ((serverResponse = buffReader.readLine()) != null) {
+                    if (serverResponse.equals("End")) { // change call to the appropriate word if its not was originally FIN
+                        break;
+                    }
+                    System.out.println("Translation: " + serverResponse);
                 }
-                System.out.println("Translation: " + serverResponse);
-            }            
-        }   catch(IOException ex){
-            ex.getMessage();
+            }   catch(IOException ex){
+                ex.getMessage();
+            }
         }
     }
-    
 }
