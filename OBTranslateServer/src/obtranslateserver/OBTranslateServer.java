@@ -70,6 +70,7 @@ public class OBTranslateServer {
         
         Socket sSocket = null;
         ServerSocket serverSocket;
+        BufferedReader input = null;
         String languageCode = "", userInput = "";
         
         try{
@@ -81,51 +82,58 @@ public class OBTranslateServer {
         }
         
         System.out.println("connected to client...");
-        
-        // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
-        BufferedReader input = null;
+
         try{
             input = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
-            languageCode = input.readLine();
-            userInput = input.readLine();
         }   catch(IOException ex){
             System.out.println(ex.getMessage());
         }
         
-        String connectionURL = genURL(languageCode, userInput);
-        URL yandexTranslate = null;
-        try{
-            yandexTranslate = new URL(connectionURL);
-        }catch(MalformedURLException err){
-            System.out.println("Error with the fetch url...");
-            System.out.println(err.getMessage());
-        }
-        
-        String apiResponse = "";
-        URLConnection apiConnection = null;
-        
-        try{
-            System.out.println("Requesting translation from Yandex...");
-            apiConnection = yandexTranslate.openConnection();
-            BufferedReader incoming = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
-            apiResponse = incoming.readLine();
-            System.out.println("Response Recieved!");         
-        }catch(IOException err){
-            System.out.println("Error fetching from API...");
-            System.out.println(err.getMessage());
-        }
-        
-        String translatedText = parseTranslation(apiResponse);
-        System.out.println("Translation: " + translatedText);
-        
-        try{
-            PrintWriter out = new PrintWriter(sSocket.getOutputStream());
-            out.println(translatedText);
-            out.flush();
-        } catch (IOException ex){
-            System.out.println("Error replying to client...");
-            System.out.println(ex.getMessage());
-        }
+        do{
+            try{
+                languageCode = input.readLine();
+                if("exit".equals(languageCode)){
+                    break;
+                }
+                userInput = input.readLine();
+            } catch (IOException ex){
+                System.out.println(ex.getMessage());
+            }
+            String connectionURL = genURL(languageCode, userInput);
+            URL yandexTranslate = null;
+            try{
+                yandexTranslate = new URL(connectionURL);
+            }catch(MalformedURLException err){
+                System.out.println("Error with the fetch url...");
+                System.out.println(err.getMessage());
+            }
+
+            String apiResponse = "";
+            URLConnection apiConnection = null;
+
+            try{
+                System.out.println("Requesting translation from Yandex...");
+                apiConnection = yandexTranslate.openConnection();
+                BufferedReader incoming = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
+                apiResponse = incoming.readLine();
+                System.out.println("Response Recieved!");         
+            }catch(IOException err){
+                System.out.println("Error fetching from API...");
+                System.out.println(err.getMessage());
+            }
+
+            String translatedText = parseTranslation(apiResponse);
+            System.out.println("Translation: " + translatedText);
+
+            try{
+                PrintWriter out = new PrintWriter(sSocket.getOutputStream());
+                out.println(translatedText);
+                out.flush();
+            } catch (IOException ex){
+                System.out.println("Error replying to client...");
+                System.out.println(ex.getMessage());
+            }
+        } while(true);
     }
 }
 
