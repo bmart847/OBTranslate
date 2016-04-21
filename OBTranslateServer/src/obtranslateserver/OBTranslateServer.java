@@ -82,11 +82,7 @@ public class OBTranslateServer {
         }
         
         System.out.println("connected to client...");
-
-<<<<<<< HEAD
-        BufferedReader input = null;
-=======
->>>>>>> Looping
+        
         try{
             input = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
         }   catch(IOException ex){
