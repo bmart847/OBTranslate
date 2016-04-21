@@ -60,6 +60,9 @@ public class OBTranslateClient {
             System.out.println("Enter language code (type 'exit' to quit):");
             userInput = uInputStream.nextLine();
             output.println(userInput);
+            if("exit".equalsIgnoreCase(userInput)){
+                break;
+            }
             System.out.println("Enter text to translate:");
             userInput = uInputStream.nextLine();
             output.println(userInput);

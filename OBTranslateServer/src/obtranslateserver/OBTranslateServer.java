@@ -92,6 +92,9 @@ public class OBTranslateServer {
         while(true){
             try{
                 languageCode = input.readLine();
+                if("exit".equalsIgnoreCase(languageCode)){
+                    break;
+                }
                 userInput = input.readLine();
             } catch (IOException ex){
                 System.out.println(ex.getMessage());
