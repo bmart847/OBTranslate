@@ -89,12 +89,9 @@ public class OBTranslateServer {
             System.out.println(ex.getMessage());
         }
         
-        do{
+        while(true){
             try{
                 languageCode = input.readLine();
-                if("exit".equals(languageCode)){
-                    break;
-                }
                 userInput = input.readLine();
             } catch (IOException ex){
                 System.out.println(ex.getMessage());
@@ -128,12 +125,13 @@ public class OBTranslateServer {
             try{
                 PrintWriter out = new PrintWriter(sSocket.getOutputStream());
                 out.println(translatedText);
+                out.println("End");
                 out.flush();
             } catch (IOException ex){
                 System.out.println("Error replying to client...");
                 System.out.println(ex.getMessage());
             }
-        } while(true);
+        }
     }
 }
 
