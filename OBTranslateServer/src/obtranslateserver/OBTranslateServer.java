@@ -70,6 +70,8 @@ public class OBTranslateServer {
         
         Socket sSocket = null;
         ServerSocket serverSocket;
+        BufferedReader input = null;
+        String languageCode = "", userInput = "";
         
         try{
             serverSocket = new ServerSocket(6000);
@@ -81,40 +83,57 @@ public class OBTranslateServer {
         
         System.out.println("connected to client...");
         
-        // ADD IN CODE HERE TO RETRIEVE LINE FROM CLIENT
-        
-        String connectionURL = genURL("ru", "Hello World.");
-        URL yandexTranslate = null;
         try{
-            yandexTranslate = new URL(connectionURL);
-        }catch(MalformedURLException err){
-            System.out.println("Error with the fetch url...");
-            System.out.println(err.getMessage());
-        }
-        
-        String apiResponse = "";
-        URLConnection apiConnection = null;
-        
-        try{
-            System.out.println("Requesting translation from Yandex...");
-            apiConnection = yandexTranslate.openConnection();
-            BufferedReader incoming = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
-            apiResponse = incoming.readLine();
-            System.out.println("Response Recieved!");         
-        }catch(IOException err){
-            System.out.println("Error fetching from API...");
-            System.out.println(err.getMessage());
-        }
-        
-        String translatedText = parseTranslation(apiResponse);
-        System.out.println("Translation: " + translatedText);
-        
-        try{
-            PrintWriter out = new PrintWriter(sSocket.getOutputStream());
-            out.printf(translatedText);
-        } catch (IOException ex){
-            System.out.println("Error replying to client...");
+            input = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
+        }   catch(IOException ex){
             System.out.println(ex.getMessage());
+        }
+        
+        while(true){
+            try{
+                languageCode = input.readLine();
+                if("exit".equalsIgnoreCase(languageCode)){
+                    break;
+                }
+                userInput = input.readLine();
+            } catch (IOException ex){
+                System.out.println(ex.getMessage());
+            }
+            String connectionURL = genURL(languageCode, userInput);
+            URL yandexTranslate = null;
+            try{
+                yandexTranslate = new URL(connectionURL);
+            }catch(MalformedURLException err){
+                System.out.println("Error with the fetch url...");
+                System.out.println(err.getMessage());
+            }
+
+            String apiResponse = "";
+            URLConnection apiConnection = null;
+
+            try{
+                System.out.println("Requesting translation from Yandex...");
+                apiConnection = yandexTranslate.openConnection();
+                BufferedReader incoming = new BufferedReader(new InputStreamReader(apiConnection.getInputStream()));
+                apiResponse = incoming.readLine();
+                System.out.println("Response Recieved!");         
+            }catch(IOException err){
+                System.out.println("Error fetching from API...");
+                System.out.println(err.getMessage());
+            }
+
+            String translatedText = parseTranslation(apiResponse);
+            System.out.println("Translation: " + translatedText);
+
+            try{
+                PrintWriter out = new PrintWriter(sSocket.getOutputStream());
+                out.println(translatedText);
+                out.println("End");
+                out.flush();
+            } catch (IOException ex){
+                System.out.println("Error replying to client...");
+                System.out.println(ex.getMessage());
+            }
         }
     }
 }
