@@ -57,6 +57,24 @@ public class OBTranslateClient {
         }
         
         while(true){
+            System.out.println("|Albanian      sq|*|Georgian      el|*|Malay         ms|*|Tagalog       tl|");
+            System.out.println("|English       en|*|Danish        da|*|Maltese       mt|*|Tatar         tt|");
+            System.out.println("|Arabic        ar|*|Yiddish       he|*|Macedonian    mk|*|Turkish       tr|");
+            System.out.println("|Armenian      hy|*|Indonesian    id|*|Mongolian     mn|*|Uzbek         uz|");
+            System.out.println("|Azerbaijan    az|*|Irish         ga|*|German        de|*|Ukrainian     uk|");
+            System.out.println("|Afrikaans     af|*|Italian       it|*|Norwegian     no|*|Finish        fi|");
+            System.out.println("|Basque        eu|*|Icelandic     is|*|Persian       fa|*|French        fr|");
+            System.out.println("|Belarusian    be|*|Spanish       es|*|Polish        pl|*|Croatian      hr|");
+            System.out.println("|Bulgarian     bg|*|Kazakh        kk|*|Portuguese    pt|*|Czech         cs|");
+            System.out.println("|Bosnian       bs|*|Catalan       ca|*|Romanian      ro|*|Swedish       sv|");
+            System.out.println("|Welsh         cy|*|Kyrgyz        ky|*|Russian       ru|*|Estonain      et|");
+            System.out.println("|Veitnamese    vi|*|Chinese       zh|*|Serbian       sr|*|Japanese      jp|");
+            System.out.println("|Hungarian     hu|*|Korean        ko|*|Slovakian     sk|*|Greek         el|");
+            System.out.println("|Hatian&Creole ht|*|Latin         la|*|Slovenian     sl|*|Malagasy      mg|");
+            System.out.println("|Galacian      gl|*|Latvian       lv|*|Swahili       sw|*|Thai          th|");
+            System.out.println("|Dutch         nl|*|Lithuanian    lt|*|Tajik         tg|*|                |");
+            
+           
             System.out.println("Enter language code (type 'exit' to quit):");
             userInput = uInputStream.nextLine();
             output.println(userInput);
